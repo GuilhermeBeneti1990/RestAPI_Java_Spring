@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.io.Serializable;
 import java.util.Objects;
 
-@JsonPropertyOrder({"id", "first_name", "last_name", "gender", "address"})
+@JsonPropertyOrder({"id", "first_name", "last_name", "gender", "address", "enabled"})
 public class PersonVO implements Serializable {
 
     private Long id;
@@ -18,6 +18,8 @@ public class PersonVO implements Serializable {
     @JsonIgnore
     private String address;
     private String gender;
+
+    private Boolean enabled;
 
     public PersonVO() {}
 
@@ -61,16 +63,24 @@ public class PersonVO implements Serializable {
         this.gender = gender;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PersonVO person = (PersonVO) o;
-        return id.equals(person.id) && firstName.equals(person.firstName) && lastName.equals(person.lastName) && address.equals(person.address) && gender.equals(person.gender);
+        PersonVO personVO = (PersonVO) o;
+        return id.equals(personVO.id) && firstName.equals(personVO.firstName) && lastName.equals(personVO.lastName) && address.equals(personVO.address) && gender.equals(personVO.gender) && enabled.equals(personVO.enabled);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, address, gender);
+        return Objects.hash(id, firstName, lastName, address, gender, enabled);
     }
 }

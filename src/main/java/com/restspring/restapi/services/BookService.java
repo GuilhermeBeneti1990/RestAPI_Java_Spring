@@ -3,9 +3,13 @@ package com.restspring.restapi.services;
 import com.restspring.restapi.adapters.DozerConverter;
 import com.restspring.restapi.exception.ResourceNotFoundException;
 import com.restspring.restapi.models.Book;
+import com.restspring.restapi.models.Person;
 import com.restspring.restapi.repositories.BookRepository;
 import com.restspring.restapi.vo.BookVO;
+import com.restspring.restapi.vo.PersonVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +20,13 @@ public class BookService {
     @Autowired
     BookRepository repository;
 
-    public List<BookVO> findAll() {
-        return DozerConverter.parseListObjects(repository.findAll(), BookVO.class);
+    private BookVO convertToBookVO(Book entity) {
+        return DozerConverter.parseObject(entity, BookVO.class);
+    }
+
+    public Page<BookVO> findAll(Pageable pageable) {
+        var page = repository.findAll(pageable);
+        return page.map(this:: convertToBookVO);
     }
 
     public BookVO findById(Long id) {
